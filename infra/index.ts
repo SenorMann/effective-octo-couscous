@@ -1,10 +1,9 @@
-import * as gateway from "aws-cdk-lib/aws-apigateway";
-import {} from "aws-cdk-lib/"
-import { Construct } from "constructs";
 import * as cdk from "aws-cdk-lib";
-import path from "path";
-import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import * as gateway from "aws-cdk-lib/aws-apigateway";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { Construct } from "constructs";
+import path from "path";
 
 class Stack extends cdk.Stack {
   constructor(scope: Construct, id: string) {
@@ -17,9 +16,8 @@ class Stack extends cdk.Stack {
       timeout: cdk.Duration.seconds(5),
     });
 
-    const api = new gateway.RestApi(this, "rest-api", {
-      defaultIntegration: new gateway.LambdaIntegration(handler),
-    })
+    const api = new gateway.RestApi(this, "rest-api", {});
+    api.root.addMethod("ANY", new gateway.LambdaIntegration(handler));
 
     new cdk.CfnOutput(this, "api-url", {
       description: "API Gateway URL",
