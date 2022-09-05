@@ -20,8 +20,4 @@ app.route("/")
   res.json({ path: "/", method: "PUT" });
 });
 
-const handler = serverless(app, { binary: ["application/json"] });
-export async function main(event: APIGatewayEvent, context: Context) {
-  const response = await handler(event, context);
-  return response;
-}
+export const handler = serverless(app, { binary: ["application/json"] });

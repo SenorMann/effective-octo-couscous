@@ -11,7 +11,6 @@ class Stack extends cdk.Stack {
     const handler = new NodejsFunction(this, "default-handler", {
       runtime: Runtime.NODEJS_16_X,
       entry: path.resolve(__dirname, "./handlers/index.ts"),
-      handler: "main",
       memorySize: 256,
       timeout: cdk.Duration.seconds(5),
     });
