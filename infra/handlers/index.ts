@@ -2,24 +2,17 @@ import serverless from "@vendia/serverless-express";
 import { APIGatewayEvent, Callback, Context } from "aws-lambda";
 import cors from "cors";
 import express from "express";
+import v1Router from "./v1";
+import v2Router from "./v2";
 
 const app = express();
 app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-
-app.route("/")
-.get((req, res) => {
-  console.log(req.headers);
-  res.json({ path: "/", method: "GET" });
-})
-.post((req, res) => {
-  console.log(req.headers);
-  res.json({ path: "/", method: "POST" });
-})
-.put((req, res) => {
-  console.log(req.headers);
-  res.json({ path: "/", method: "PUT" });
+app.use("/v1", v1Router);
+app.use("/v2", v2Router);
+app.use("*", (req, res) => {
+  res.status(404).json({ message: `Cannot ${req.method} ${req.path}` });
 });
 
 const handler = serverless({
