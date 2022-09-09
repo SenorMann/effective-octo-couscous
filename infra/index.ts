@@ -18,15 +18,14 @@ class Stack extends cdk.Stack {
     });
 
     const api = new gateway.RestApi(this, "rest-api", {
-      binaryMediaTypes: ["image/*"]
-    });
-
-    api.root.addProxy({
+      binaryMediaTypes: ["image/*"],
       defaultCorsPreflightOptions: {
         allowOrigins: Cors.ALL_ORIGINS,
+        allowMethods: Cors.ALL_METHODS,
       },
-      defaultIntegration: new gateway.LambdaIntegration(handler),
     });
+
+    api.root.addMethod("ANY", new gateway.LambdaIntegration(handler))
 
     new cdk.CfnOutput(this, "api-url", {
       description: "API Gateway URL",
