@@ -1,5 +1,6 @@
 import * as cdk from "aws-cdk-lib";
 import * as gateway from "aws-cdk-lib/aws-apigateway";
+import { Cors } from "aws-cdk-lib/aws-apigateway";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
@@ -16,7 +17,13 @@ class Stack extends cdk.Stack {
     });
 
     const api = new gateway.RestApi(this, "rest-api", {});
-    api.root.addMethod("ANY", new gateway.LambdaIntegration(handler));
+
+    api.root.addProxy({
+      defaultCorsPreflightOptions: {
+        allowOrigins: Cors.ALL_ORIGINS,
+      },
+      defaultIntegration: new gateway.LambdaIntegration(handler),
+    });
 
     new cdk.CfnOutput(this, "api-url", {
       description: "API Gateway URL",

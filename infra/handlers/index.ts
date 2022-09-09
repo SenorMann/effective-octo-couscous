@@ -1,7 +1,7 @@
-import { APIGatewayEvent, Context } from 'aws-lambda';
-import express from "express";
-import serverless from 'serverless-http';
 import cors from "cors";
+import express from "express";
+// import serverless from 'serverless-http';
+import serverless from "@vendia/serverless-express";
 
 const app = express();
 app.use(cors());
@@ -20,4 +20,7 @@ app.route("/")
   res.json({ path: "/", method: "PUT" });
 });
 
-export const handler = serverless(app, { binary: ["application/json"] });
+export const handler = serverless({
+  app,
+  binaryMimeTypes: ["image/*"],
+});
