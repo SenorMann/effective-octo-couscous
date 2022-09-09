@@ -14,6 +14,7 @@ class Stack extends cdk.Stack {
       entry: path.resolve(__dirname, "./handlers/index.ts"),
       memorySize: 256,
       timeout: cdk.Duration.seconds(5),
+      handler: "main",
     });
 
     const api = new gateway.RestApi(this, "rest-api", {
