@@ -17,12 +17,20 @@ class Stack extends cdk.Stack {
       handler: "main",
     });
 
+    const defaultHandler = new NodejsFunction(this, "default-handler", {
+      runtime: Runtime.NODEJS_16_X,
+      entry: path.resolve(__dirname, "./handlers/default.ts"),
+      memorySize: 256,
+      timeout: cdk.Duration.seconds(5),
+    });
+
     const api = new gateway.RestApi(this, "rest-api", {
       binaryMediaTypes: ["image/*"],
       defaultCorsPreflightOptions: {
         allowOrigins: Cors.ALL_ORIGINS,
         allowMethods: Cors.ALL_METHODS,
       },
+      defaultIntegration: new gateway.LambdaIntegration(defaultHandler),
     });
 
     api.root.addMethod("ANY", new gateway.LambdaIntegration(handler))
