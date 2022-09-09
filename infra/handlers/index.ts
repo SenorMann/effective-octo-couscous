@@ -5,6 +5,8 @@ import serverless from "@vendia/serverless-express";
 
 const app = express();
 app.use(cors());
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 app.route("/")
 .get((req, res) => {

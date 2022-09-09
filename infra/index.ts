@@ -16,7 +16,9 @@ class Stack extends cdk.Stack {
       timeout: cdk.Duration.seconds(5),
     });
 
-    const api = new gateway.RestApi(this, "rest-api", {});
+    const api = new gateway.RestApi(this, "rest-api", {
+      binaryMediaTypes: ["image/*"]
+    });
 
     api.root.addProxy({
       defaultCorsPreflightOptions: {
