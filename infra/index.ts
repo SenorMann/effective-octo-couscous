@@ -17,7 +17,7 @@ class Stack extends cdk.Stack {
       handler: "main",
     });
 
-    const defaultHandler = new NodejsFunction(this, "default-handler", {
+    const defaultHandler = new NodejsFunction(this, "fallback-handler", {
       runtime: Runtime.NODEJS_16_X,
       entry: path.resolve(__dirname, "./handlers/default.ts"),
       memorySize: 256,
